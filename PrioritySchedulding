@@ -1,0 +1,143 @@
+#include<stdio.h>
+
+void main()
+{
+ int n,i,j,temp;
+ 
+ printf("\nEnter the nuimber of process : ");
+ scanf("%d",&n);
+ 
+ int P[n],BT[n],WT[n],TAT[n],Prio[n],CT[n];
+ 
+ printf("\nEnter the Burts Time : ");
+ 
+ for(i=0;i<n;i++)
+ {
+  printf("\nEnter Burst Time of P%d : ",i+1);
+  
+  scanf("%d",&BT[i]);
+  P[i]=i+1;
+ }
+ 
+ printf("\nEnter the Priority of processes : ");
+ for(i=0;i<n;i++)
+ {
+  printf("\nEnter Priority of P%d : ",i+1);
+  
+  scanf("%d",&Prio[i]);
+ }
+ 
+ 
+ for(i=0;i<n;i++)
+ {
+  for(j=i+1;j<n;j++)
+  {
+   if(Prio[i] > Prio[j])
+   {
+    //swap P BT
+    temp = BT[i];
+    BT[i] = BT[j];
+    BT[j] = temp;
+    
+    temp = Prio[i];
+    Prio[i] = Prio[j];
+    Prio[j] = temp;
+    
+        
+    temp = P[i];
+    P[i] = P[j];
+    P[j] = temp;
+   }
+  }
+ }
+ 
+ CT[0] = BT[0];
+ WT[0] = 0;
+    
+ //CT 
+ for(i=1;i<n;i++)
+ {
+  CT[i] = BT[i] + CT[i-1];
+ }
+ 
+ float sumTAT=0.0 ,sumWT=0.0;
+ 
+ for(i=0;i<n;i++)
+ {
+  TAT[i] = CT[i];
+  WT[i] = TAT[i]-BT[i];
+  
+  sumTAT = sumTAT + TAT[i]; // sumTAT+=TAT[i];
+  sumWT+= WT[i];
+ } 
+ 
+  
+ printf("\n\nGANTH CHART\n************\n");
+  
+  for(i=0;i<n;i++) // TOP BORDER
+  {
+   printf("_____");
+  }
+  
+  printf("\n|");
+  for(i=0;i<n;i++)
+  {
+   printf(" P%d |",P[i]);
+  }
+  
+  printf("\n");   // BOTTOM BORDER
+  for(i=0;i<n;i++)
+  {
+   printf("_____");
+  }
+  
+  printf("\n0    ");  // TIME
+  for(i=0;i<n;i++)
+  {
+   printf("%d    ",TAT[i]);
+  } 
+   printf("\n\n");
+   
+   printf("\nAverage waiting time: %.2f\n", (float)sumWT/n);
+   printf("\nAverage turn around time: %.2f\n",(float)sumTAT/n);
+   
+    
+ }
+ 
+ 
+ /*Output
+ 
+ 
+ Enter the nuimber of process : 4
+
+Enter the Burts Time : 
+Enter Burst Time of P1 : 2
+
+Enter Burst Time of P2 : 3
+
+Enter Burst Time of P3 : 5
+
+Enter Burst Time of P4 : 2
+
+Enter the Priority of processes : 
+Enter Priority of P1 : 2
+
+Enter Priority of P2 : 1
+
+Enter Priority of P3 : 3
+
+Enter Priority of P4 : 4
+
+
+GANTH CHART
+************
+____________________
+| P2 | P1 | P3 | P4 |
+____________________
+0    3    5    10    12    
+
+
+Average waiting time: 4.50
+
+Average turn around time: 7.50
+*/
